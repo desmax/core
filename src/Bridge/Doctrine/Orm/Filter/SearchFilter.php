@@ -90,7 +90,7 @@ class SearchFilter extends AbstractContextAwareFilter implements SearchFilterInt
          */
         $metadata = $this->getNestedMetadata($resourceClass, $associations);
 
-        $values = $this->normalizeValues((array) $value, $property);
+        $values = $this->normalizeValues((array) $value, $property, $metadata);
         if (null === $values) {
             return;
         }

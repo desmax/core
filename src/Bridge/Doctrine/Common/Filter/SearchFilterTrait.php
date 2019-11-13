@@ -16,6 +16,7 @@ namespace ApiPlatform\Core\Bridge\Doctrine\Common\Filter;
 use ApiPlatform\Core\Api\IriConverterInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Common\PropertyHelperTrait;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
@@ -133,11 +134,15 @@ trait SearchFilterTrait
     /**
      * Normalize the values array.
      */
-    protected function normalizeValues(array $values, string $property): ?array
+    protected function normalizeValues(array $values, string $property, ClassMetadata $metadata): ?array
     {
         foreach ($values as $key => $value) {
             if (!\is_int($key) || !\is_string($value)) {
                 unset($values[$key]);
+            }
+
+            if ($metadata->getTypeOfField($property) === 'datetime') {
+                $values[$key] = new \DateTime($value);
             }
         }
 
