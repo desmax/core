@@ -73,6 +73,7 @@ final class DeserializeListener
 
         if (
             'DELETE' === $method
+            || 'PATCH' === $method
             || $request->isMethodSafe()
             || !($attributes = RequestAttributesExtractor::extractAttributes($request))
             || !$attributes['receive']
