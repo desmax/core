@@ -16,6 +16,7 @@ namespace ApiPlatform\Core\Bridge\Doctrine\Common\Filter;
 use ApiPlatform\Core\Api\IriConverterInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Common\PropertyHelperTrait;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
+use App\Util\Utils;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
@@ -143,7 +144,11 @@ trait SearchFilterTrait
 
             if ($metadata->getTypeOfField($property) === 'datetime') {
                 $values[$key] = new \DateTime($value);
+                if ($property === 'shiftStart' || $property === 'shiftEnd') {
+                    Utils::resetDate($values[$key]);
+                }
             }
+
         }
 
         if (empty($values)) {
