@@ -139,6 +139,12 @@ trait SearchFilterTrait
             if (!\is_int($key) || !\is_string($value)) {
                 unset($values[$key]);
             }
+
+            if ($property === 'shiftStart' || $property === 'shiftEnd') {
+                $value = new \DateTime($value);
+                $value->setDate(1970, 1, 1);
+                $values[$key] = $value;
+            }
         }
 
         if (empty($values)) {
